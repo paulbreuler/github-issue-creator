@@ -1,0 +1,72 @@
+{
+    "milestone": "Receiving",
+    "repo": "palletshuttle/Trak-It",
+    "categories": [
+        {
+            "section": "SDK Requirements",
+            "sub_sections": [
+                {
+                    "section": "Event Handling",
+                    "issues": [
+                        {
+                            "title": "Implement InitiateUnloadingEvent",
+                            "tags": [
+                                "SDK",
+                                "Event Handling"
+                            ],
+                            "description": "Create a new event for signaling that a shipment is ready for unloading. Fields should include UnloadingID, RequestedPallets, UnloadLocation, and EventTimestamp."
+                        },
+                        {
+                            "title": "Implement CompleteUnloadingEvent",
+                            "tags": [
+                                "SDK",
+                                "Event Handling"
+                            ],
+                            "description": "Create a new event for indicating that unloading is complete and the products are ready for deep storage. Fields should include UnloadingID, EventTimestamp, and an optional IsRejected Boolean."
+                        },
+                        {
+                            "title": "Implement PlaceInventoryOnSpurEvent",
+                            "tags": [
+                                "SDK",
+                                "Event Handling"
+                            ],
+                            "description": "Create an event to indicate that an inventory unit (MU) is placed onto a spur and is ready for inducting. Fields should include InventoryID, SpurLocation, and EventTimestamp."
+                        },
+                        {
+                            "title": "Implement RemoveInventoryFromSpurEvent",
+                            "tags": [
+                                "SDK",
+                                "Event Handling"
+                            ],
+                            "description": "Create an event to indicate that an inventory unit (MU) has been removed from a spur, freeing it for another MU. Fields should include InventoryID, PreviousSpurLocation, and EventTimestamp."
+                        },
+                        {
+                            "title": "Implement StartPickingOrderEvent",
+                            "tags": [
+                                "SDK",
+                                "Event Handling"
+                            ],
+                            "description": "Create an event to indicate that the order has been processed for picking. Fields should include OrderID and EventTimestamp."
+                        },
+                        {
+                            "title": "Implement CommenceShippingEvent",
+                            "tags": [
+                                "SDK",
+                                "Event Handling"
+                            ],
+                            "description": "Create an event to indicate that the truck for shipping has arrived. Fields should include OrderID and EventTimestamp."
+                        },
+                        {
+                            "title": "Implement InventoryRelocatedEvent",
+                            "tags": [
+                                "SDK",
+                                "Event Handling"
+                            ],
+                            "description": "Create an event to notify whenever an inventory unit (MU) is moved to a new location. Fields should include InventoryID, NewLocation, and EventTimestamp."
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

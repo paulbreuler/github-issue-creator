@@ -1,0 +1,65 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Issues",
+    "type": "object",
+    "properties": {
+      "milestone": {"type": "string"},
+      "repo": {"type": "string"},
+      "categories": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "section": {"type": "string"},
+            "sub_sections": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "section": {"type": "string"},
+                  "issues": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {"type": "string"},
+                        "tags": {
+                          "type": "array",
+                          "items": {"type": "string"}
+                        },
+                        "description": {"type": "string"}
+                      },
+                      "required": ["title", "tags", "description"]
+                    }
+                  }
+                },
+                "required": ["section", "issues"]
+              }
+            },
+            "issues": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "title": {"type": "string"},
+                  "tags": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  },
+                  "description": {"type": "string"}
+                },
+                "required": ["title", "tags", "description"]
+              }
+            }
+          },
+          "required": ["section"],
+          "oneOf": [
+            {"required": ["sub_sections"]},
+            {"required": ["issues"]}
+          ]
+        }
+      }
+    },
+    "required": ["milestone", "repo", "categories"]
+  }
+  
