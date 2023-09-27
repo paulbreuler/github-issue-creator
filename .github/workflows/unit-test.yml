@@ -20,4 +20,4 @@ jobs:
           pip install jsonschema
       
       - name: Run tests
-        run: python -m unittest test_create_gh_issues.py
+        run: python -m unittest src/test_create_gh_issues.py
