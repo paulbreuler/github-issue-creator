@@ -1,46 +1,57 @@
-# BEGIN: 9f7d8e5c8d9a
+"""
+Module for managing GitHub issues using GitHub CLI.
+"""
 import json
 import subprocess
+import sys
+# Ensure jsonschema is installed in your environment.
 from jsonschema import validate, ValidationError
 
+
 class IssueManager:
-    # Function to check if an issue with the given title exists
+    """
+    A class for managing GitHub issues.
+    """
+
     def issue_exists(self, title, repo):
+        """
+        Check if an issue with the given title exists in the repository.
+        """
+        command = ['gh', 'issue', 'list', '--repo',
+                   repo, '--json', 'title', '--state', 'all']
+        result = subprocess.run(
+            command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False)
 
-
-        command = ['gh', 'issue', 'list', '--repo', repo, '--json', 'title', '--state', 'all']
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        
         if result.returncode != 0:
-            print(f"Error executing command: {result.stderr}")
-            return False  # or raise an exception, depending on how you want to handle errors
-        
+            print(f"Error executing command: {result.stderr.strip()}")
+            return False
+
         if not result.stdout.strip():
-            return False  # No issues found
-        
+            return False
+
         try:
             issues = json.loads(result.stdout)
-        except json.JSONDecodeError as e:
-            print(f"Error decoding JSON: {e}")
-            return False  # or raise an exception, depending on how you want to handle errors
-        
+        except json.JSONDecodeError as json_err:
+            print(f"Error decoding JSON: {json_err}")
+            return False
+
         return any(issue['title'] == title for issue in issues)
 
     def create_issues(self):
-        
-        with open('schema.json', 'r') as f:
-            schema = json.load(f)
+        """
+        Create GitHub issues as per the details provided in JSON file.
+        """
+        with open('schema.json', 'r', encoding='utf-8') as schema_file:
+            schema = json.load(schema_file)
 
-        # Load issues from JSON file
-        with open('issues.json', 'r') as f:
-            data = json.load(f)
+        with open('issues.json', 'r', encoding='utf-8') as issues_file:
+            data = json.load(issues_file)
 
-        # Validate the loaded JSON data against the schema
         try:
             validate(instance=data, schema=schema)
-        except ValidationError as e:
-            print(f"JSON Validation Error: {e}")
-            exit(1)
+        except ValidationError as validation_err:
+            print(f"JSON Validation Error: {validation_err}")
+            sys.exit(1)
 
         milestone = data['milestone']
         repo = data['repo']
@@ -77,7 +88,7 @@ class IssueManager:
                             '--milestone', milestone
                         ]
 
-                        subprocess.run(command)
+                        subprocess.run(command, check=True)
             else:
                 # Handle the case where no 'sub_sections' exist
                 for issue in category['issues']:
@@ -101,4 +112,4 @@ class IssueManager:
                         '--milestone', milestone
                     ]
 
-                    subprocess.run(command)
+                    subprocess.run(command, check=True)
